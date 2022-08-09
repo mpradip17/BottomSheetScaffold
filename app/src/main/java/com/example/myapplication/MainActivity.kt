@@ -134,8 +134,8 @@ fun ShowBottomSheet() {
         }) {
         Scaffold(
             topBar = { TopBar() },
-            backgroundColor = colorResource1(id = R.color.purple_500)
-        ) { padding ->  // We need to pass scaffold's inner padding to content. That's why we use Box.
+            backgroundColor = colorResource1(id = R.color.black_shade)
+        ) { padding ->
             Box(modifier = Modifier.padding(padding)) {
                 scope.launch {
                     sheetState.expand()
@@ -187,11 +187,11 @@ fun BottomSheetContent() {
             text = "OTP Verification",
             color = colorResource1(R.color.black_shade),
             style = typography.body1,
-            fontSize = 19.sp,
+            fontSize = 16.sp,
             modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
         )
         Text(
-            text = "The redemption request has been successfully placed. Please verify the details below.",
+            text = "An OTP is sent to sridhar@fundsindia.com and +919782741412 (Your contact details registered at RTA for this folio). Use OTP sent to either email or mobile number to proceed",
             color = colorResource1(R.color.bermuda_grey),
             style = typography.body1,
             fontSize = 16.sp,
@@ -227,301 +227,19 @@ fun BottomSheetContent() {
                 .fillMaxWidth()
                 .padding(5.dp)
         )
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 2.dp, bottom = 2.dp, start = 2.dp, end = 2.dp),
-            horizontalArrangement = Arrangement.SpaceAround
-        ) {
-
-            val focusManager = LocalFocusManager.current
-
-            val (digit1, setDigit1) = remember {
-                mutableStateOf("")
+        var isNextBtnStatus by remember {
+            mutableStateOf(false)
+        }
+        var smsCodeNumber by remember {
+            mutableStateOf("")
+        }
+        SmsCodeView(
+            smsCodeLength = 6,
+            smsFulled = {
+                smsCodeNumber = it
+                isNextBtnStatus = it.length == 6
             }
-            val (digit2, setDigit2) = remember {
-                mutableStateOf("")
-            }
-            val (digit3, setDigit3) = remember {
-                mutableStateOf("")
-            }
-            val (digit4, setDigit4) = remember {
-                mutableStateOf("")
-            }
-            val (digit5, setDigit5) = remember {
-                mutableStateOf("")
-            }
-            val (digit6, setDigit6) = remember {
-                mutableStateOf("")
-            }
-
-            LaunchedEffect(
-                key1 = digit1,
-            ) {
-                if (digit1.isNotEmpty()) {
-                    focusManager.moveFocus(
-                        focusDirection = FocusDirection.Next,
-                    )
-                }
-            }
-
-            LaunchedEffect(
-                key1 = digit2,
-            ) {
-                if (digit2.isNotEmpty()) {
-                    focusManager.moveFocus(
-                        focusDirection = FocusDirection.Next,
-                    )
-                }
-            }
-            LaunchedEffect(
-                key1 = digit3,
-            ) {
-                if (digit3.isNotEmpty()) {
-                    focusManager.moveFocus(
-                        focusDirection = FocusDirection.Next,
-                    )
-                }
-            }
-            LaunchedEffect(
-                key1 = digit4,
-            ) {
-                if (digit4.isNotEmpty()) {
-                    focusManager.moveFocus(
-                        focusDirection = FocusDirection.Next,
-                    )
-                }
-            }
-            LaunchedEffect(
-                key1 = digit5,
-            ) {
-                if (digit5.isNotEmpty()) {
-                    focusManager.moveFocus(
-                        focusDirection = FocusDirection.Next,
-                    )
-                }
-            }
-            LaunchedEffect(
-                key1 = digit6,
-            ) {
-                if (digit6.isNotEmpty()) {
-                    focusManager.moveFocus(
-                        focusDirection = FocusDirection.Next,
-                    )
-                }
-            }
-
-            /*Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceAround,
-            ) {*/
-
-                OutlinedTextField(
-                    value = digit1,
-                    singleLine = true,
-                    onValueChange = {
-                        setDigit1(it)
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Number,
-                        imeAction = ImeAction.Next,
-                    ),
-                    shape = RoundedCornerShape(1.dp),
-                    modifier = Modifier
-                        .width(45.dp)
-                        .height(55.dp),
-                    maxLines = 1,
-                    textStyle = LocalTextStyle.current.copy(
-                        textAlign = TextAlign.Center,
-                        color = colorResource1(id = R.color.blue),
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 19.sp
-                    ),
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        cursorColor = colorResource1(id = R.color.blue),
-                        focusedBorderColor = colorResource1(id = R.color.blue),
-                        backgroundColor = colorResource1(id = R.color.light_blue),
-                        unfocusedBorderColor = colorResource1(id = R.color.light_blue)
-                    )
-                )
-                OutlinedTextField(
-                    value = digit2,
-                    singleLine = true,
-                    onValueChange = {
-                        setDigit2(it)
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Number,
-                        imeAction = ImeAction.Next,
-                    ),
-                    shape = RoundedCornerShape(1.dp),
-                    modifier = Modifier
-                        .width(45.dp)
-                        .height(55.dp),
-                    maxLines = 1,
-                    textStyle = LocalTextStyle.current.copy(
-                        textAlign = TextAlign.Center,
-                        color = colorResource1(id = R.color.blue),
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 19.sp
-                    ),
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        cursorColor = colorResource1(id = R.color.blue),
-                        focusedBorderColor = colorResource1(id = R.color.blue),
-                        backgroundColor = colorResource1(id = R.color.light_blue),
-                        unfocusedBorderColor = colorResource1(id = R.color.light_blue)
-                    )
-                )
-                OutlinedTextField(
-                    value = digit3,
-                    singleLine = true,
-                    onValueChange = {
-                        setDigit3(it)
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Number,
-                        imeAction = ImeAction.Next,
-                    ),
-                    shape = RoundedCornerShape(1.dp),
-                    modifier = Modifier
-                        .width(45.dp)
-                        .height(55.dp),
-                    maxLines = 1,
-                    textStyle = LocalTextStyle.current.copy(
-                        textAlign = TextAlign.Center,
-                        color = colorResource1(id = R.color.blue),
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 19.sp
-                    ),
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        cursorColor = colorResource1(id = R.color.blue),
-                        focusedBorderColor = colorResource1(id = R.color.blue),
-                        backgroundColor = colorResource1(id = R.color.light_blue),
-                        unfocusedBorderColor = colorResource1(id = R.color.light_blue)
-                    )
-                )
-
-                OutlinedTextField(
-                    value = digit4,
-                    singleLine = true,
-                    onValueChange = {
-                        setDigit4(it)
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Number,
-                        imeAction = ImeAction.Next,
-                    ),
-                    shape = RoundedCornerShape(1.dp),
-                    modifier = Modifier
-                        .width(45.dp)
-                        .height(55.dp),
-                    maxLines = 1,
-                    textStyle = LocalTextStyle.current.copy(
-                        textAlign = TextAlign.Center,
-                        color = colorResource1(id = R.color.blue),
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 19.sp
-                    ),
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        cursorColor = colorResource1(id = R.color.blue),
-                        focusedBorderColor = colorResource1(id = R.color.blue),
-                        backgroundColor = colorResource1(id = R.color.light_blue),
-                        unfocusedBorderColor = colorResource1(id = R.color.light_blue)
-                    )
-                )
-                OutlinedTextField(
-                    value = digit5,
-                    singleLine = true,
-                    onValueChange = {
-                        setDigit5(it)
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Number,
-                        imeAction = ImeAction.Next,
-                    ),
-                    shape = RoundedCornerShape(1.dp),
-                    modifier = Modifier
-                        .width(45.dp)
-                        .height(55.dp),
-                    maxLines = 1,
-                    textStyle = LocalTextStyle.current.copy(
-                        textAlign = TextAlign.Center,
-                        color = colorResource1(id = R.color.blue),
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 19.sp
-                    ),
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        cursorColor = colorResource1(id = R.color.blue),
-                        focusedBorderColor = colorResource1(id = R.color.blue),
-                        backgroundColor = colorResource1(id = R.color.light_blue),
-                        unfocusedBorderColor = colorResource1(id = R.color.light_blue)
-                    )
-                )
-                OutlinedTextField(
-                    value = digit6,
-                    singleLine = true,
-                    onValueChange = {
-                        setDigit6(it)
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Number,
-                        imeAction = ImeAction.Next,
-                    ),
-                    shape = RoundedCornerShape(1.dp),
-                    modifier = Modifier
-                        .width(45.dp)
-                        .height(55.dp),
-                    maxLines = 1,
-                    textStyle = LocalTextStyle.current.copy(
-                        textAlign = TextAlign.Center,
-                        color = colorResource1(id = R.color.blue),
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 19.sp
-                    ),
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        cursorColor = colorResource1(id = R.color.blue),
-                        focusedBorderColor = colorResource1(id = R.color.blue),
-                        backgroundColor = colorResource1(id = R.color.light_blue),
-                        unfocusedBorderColor = colorResource1(id = R.color.light_blue)
-                    )
-                )
-            }
-            /*  val otpOne: MutableState<String> = remember { mutableStateOf("") }
-              val otpTwo: MutableState<String> = remember { mutableStateOf("") }
-              val otpThree: MutableState<String> = remember { mutableStateOf("") }
-              val otpFour: MutableState<String> = remember { mutableStateOf("") }
-              val otpFive: MutableState<String> = remember { mutableStateOf("") }
-              val otpSix: MutableState<String> = remember { mutableStateOf("") }
-
-              val max = 1
-              OutlinedTextField(value = otpOne.value, singleLine = true,
-                  onValueChange = { if (it.length <= max) otpOne.value = it },
-                  //       keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                  keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-
-                  shape = RoundedCornerShape(1.dp), modifier = Modifier.width(45.dp).height(55.dp),
-                  maxLines = 1,
-                  textStyle = LocalTextStyle.current.copy(
-                      textAlign = TextAlign.Center,
-                      color = colorResource1(id = R.color.blue),
-                      fontWeight = FontWeight.Bold,
-                      fontSize = 19.sp
-                  ),
-                  colors = TextFieldDefaults.outlinedTextFieldColors(
-                      cursorColor = colorResource1(id = R.color.blue),
-                      focusedBorderColor = colorResource1(id = R.color.blue),
-                      backgroundColor = colorResource1(id = R.color.light_blue),
-                      unfocusedBorderColor = colorResource1(id = R.color.light_blue)
-                  )
-              )*/
-            /* CommonOtpTextField(otp = otpOne)
-             CommonOtpTextField(otp = otpTwo)
-             CommonOtpTextField(otp = otpThree)
-             CommonOtpTextField(otp = otpFour)
-             CommonOtpTextField(otp = otpFive)
-             CommonOtpTextField(otp = otpSix)*/
-
-            //     }
+        )
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
@@ -557,7 +275,7 @@ fun BottomSheetContent() {
 
             }
         }
-        ButtonWithRoundCornerShape()
+        ButtonWithRoundCornerShape(isNextBtnStatus)
     }
 
 }
@@ -585,15 +303,23 @@ fun MultipleColorInText(value: String) {
 }
 
 @Composable
-fun ButtonWithRoundCornerShape() {
+fun ButtonWithRoundCornerShape(enabled:Boolean) {
     Button(
         onClick = {
 
-        },
-        colors = ButtonDefaults.buttonColors(
-            backgroundColor =
-            colorResource1(R.color.blue)
-        ),
+        },enabled=enabled,
+
+        colors =
+        if (enabled){
+            ButtonDefaults.buttonColors(
+                backgroundColor = colorResource1(R.color.blue)
+            )
+        }else{
+            ButtonDefaults.buttonColors(
+                backgroundColor = colorResource1(R.color.light_blue)
+            )
+        }
+        ,
         modifier = Modifier
             .fillMaxWidth()
             .height(60.dp)
@@ -773,7 +499,7 @@ fun LottieAnimations() {
 fun TopBar() {
     TopAppBar(
         title = { Text(text = stringResource(R.string.app_name), fontSize = 18.sp) },
-        backgroundColor = colorResource1(id = R.color.purple_700),
+        backgroundColor = colorResource1(id = R.color.black_shade),
         contentColor = Color.White
     )
 }
