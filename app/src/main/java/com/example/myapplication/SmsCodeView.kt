@@ -32,6 +32,7 @@ import androidx.core.text.isDigitsOnly
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SmsCodeView(
+    modifier: Modifier = Modifier,
     smsCodeLength: Int,
     smsFulled: (String) -> Unit
 ) {
@@ -45,7 +46,7 @@ fun SmsCodeView(
     }
 
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
@@ -65,9 +66,7 @@ fun SmsCodeView(
                                 enteredNumbers[index] = ""
                                 smsFulled.invoke(enteredNumbers.joinToString(separator = ""))
                             } else {
-                                focusRequesters
-                                    .getOrNull(index.minus(1))
-                                    ?.requestFocus()
+                                focusRequesters.getOrNull(index.minus(1))?.requestFocus()
                             }
                         }
                         false
@@ -84,6 +83,8 @@ fun SmsCodeView(
                 maxLines = 1,
               //  colors = textFieldColors,
                 colors = TextFieldDefaults.outlinedTextFieldColors(
+                    disabledPlaceholderColor=colorResource(R.color.light_blue),
+                    placeholderColor=colorResource(R.color.light_blue),
                     cursorColor = colorResource(R.color.blue),
                     focusedBorderColor = colorResource(R.color.blue),
                     backgroundColor = colorResource(R.color.light_blue),

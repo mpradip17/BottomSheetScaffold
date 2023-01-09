@@ -2,23 +2,27 @@ package com.example.myapplication
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
@@ -29,8 +33,11 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -46,7 +53,7 @@ import androidx.compose.ui.res.colorResource as colorResource1
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         setContent {
             ShowBottomSheet()
         }
@@ -58,6 +65,7 @@ class MainActivity : ComponentActivity() {
 @Preview
 @Composable
 fun ShowBottomSheet() {
+
     val sheetState = rememberBottomSheetState(
         initialValue = BottomSheetValue.Collapsed
     )
@@ -74,7 +82,7 @@ fun ShowBottomSheet() {
             topStart = 12.dp,
             topEnd = 12.dp
         ),
-        // sheetPeekHeight = 400.dp,
+        sheetGesturesEnabled = false,
         // If we don't have a value yet, just render it at the default value
         sheetPeekHeight = if (peekHeightPx == 0) {
             BottomSheetScaffoldDefaults.SheetPeekHeight
@@ -94,18 +102,31 @@ fun ShowBottomSheet() {
                 //     .border(1.dp, Color.White)
             ) {
                 val (textTopCenter, textTopEnd) = createRefs()
+                val columnWidth = 100.dp
+                //val icon = imageResource(R.drawable.ic_otp_verify)
                 FloatingActionButton(
-                    modifier = Modifier.constrainAs(textTopCenter) {
-                        top.linkTo(parent.top, 8.dp)
-                        start.linkTo(parent.start, 8.dp)
-                        end.linkTo(parent.end, 8.dp)
-                    },
+                    //  val icon = +imageResource(R.drawable.ic_add_icon)
+                    // FloatingActionButton(icon = icon, color = Color.Red, elevation = 8.dp)
+                    modifier = Modifier
+                        .constrainAs(textTopCenter) {
+                            top.linkTo(parent.top, 0.dp)
+                            start.linkTo(parent.start, 0.dp)
+                            end.linkTo(parent.end, 0.dp)
+                        }
+                        .width(columnWidth)
+                        .height(columnWidth),
                     onClick = {
 
                     },
                     shape = CircleShape
                 ) {
-                    LottieAnimations()
+                    Image(
+                        modifier = Modifier.fillMaxSize(),
+                        painter = painterResource(id = R.drawable.ic_otp_verify),
+                        contentScale = ContentScale.FillBounds,
+                        contentDescription = null
+                    )
+                    //   LottieAnimations()
                 }
                 Image(
                     modifier = Modifier
@@ -115,13 +136,13 @@ fun ShowBottomSheet() {
                             end.linkTo(parent.end, 8.dp)
                         }
                         .clickable {
-                            scope.launch {
-                                if (sheetState.isCollapsed) {
-                                    sheetState.expand()
-                                } else {
-                                    sheetState.collapse()
-                                }
-                            }
+                            /*  scope.launch {
+                                  if (sheetState.isCollapsed) {
+                                      sheetState.expand()
+                                  } else {
+                                      sheetState.collapse()
+                                  }
+                              }*/
                         },
                     painter = painterResource(R.drawable.ic_close_otp),
                     contentDescription = null,
@@ -150,187 +171,214 @@ fun ShowBottomSheet() {
     }
 }
 
+@Composable
+fun openSansBold() = FontFamily(Font(R.font.opensansbold, weight = FontWeight.Normal))
+
+@Composable
+fun openSansRegular() = FontFamily(Font(R.font.opensansregular, weight = FontWeight.Normal))
+
+@Composable
+fun dpToSp(dp: Dp) = with(LocalDensity.current) { dp.toSp() }
+
+@Composable
+fun typographyBold() = Typography(
+    h1 = TextStyle(
+        fontFamily = openSansBold(),
+        fontWeight = FontWeight.Normal
+    )
+)
+
+@Composable
+fun typographyRegular() = Typography(
+    body1 = TextStyle(
+        fontFamily = openSansRegular(),
+        fontWeight = FontWeight.Normal
+    )
+)
+
+
 @SuppressLint("CoroutineCreationDuringComposition", "UnrememberedMutableState")
 @Composable
 fun BottomSheetContent() {
-    val fonts = FontFamily(
-        Font(R.font.opensansbold, weight = FontWeight.Bold),
-        Font(R.font.opensansregular, weight = FontWeight.Normal),
-        Font(R.font.opensanssemibold, weight = FontWeight.SemiBold)
-    )
-    val typography = Typography(
-        body1 = TextStyle(
-            fontFamily = fonts, fontWeight = FontWeight.Bold,
-            fontSize = 19.sp
-        ), body2 = TextStyle(
-            fontFamily = fonts, fontWeight = FontWeight.Normal,
-            fontSize = 16.sp
-        ), h1 = TextStyle(
-            fontFamily = fonts, fontWeight = FontWeight.SemiBold,
-            fontSize = 16.sp
-        )
-    )
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            //  .border(1.dp, Color.Black)
-            .padding(10.dp)
-    ) {
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .padding(10.dp)) {
+        ConstraintLayout {
+            val (title, desc, line, otpTxt, smsView, resend, otpExpire, btn) = createRefs()
+            Text(
+                text = "OTP Verification",
+                textAlign = TextAlign.Center,
+                color = colorResource1(R.color.black_shade),
+                style = typographyBold().h1,
+                fontSize = dpToSp(19.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .constrainAs(title) {
+                        top.linkTo(parent.top, margin = 45.dp)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    }
+            )
+            Text(
+                text = "An OTP is sent to sridhar@fundsindia.com and +919782741412 (Your contact details registered at RTA for this folio). Use OTP sent to either email or mobile number to proceed",
+                color = colorResource1(R.color.bermuda_grey),
+                style = typographyRegular().body1,
+                fontSize = dpToSp(13.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .constrainAs(desc) {
+                        top.linkTo(title.bottom, margin = 15.dp)
+                        start.linkTo(title.start)
+                        end.linkTo(title.end)
+                    }
+            )
+            Divider(
+                modifier = Modifier
+                    .width(25.dp)
+                    .constrainAs(line) {
+                        centerHorizontallyTo(parent)
+                        top.linkTo(desc.bottom, margin = 10.dp)
+                    }
+                    .border(25.dp, colorResource1(R.color.bermuda_grey)),
+                color = colorResource1(R.color.bermuda_grey),
+                thickness = 3.dp
+            )
+            Text(text = "Enter OTP",
+                color = colorResource1(R.color.black_shade),
+                style = typographyBold().h1,
+                fontSize = dpToSp(15.dp),
+                modifier = Modifier.constrainAs(otpTxt) {
+                    top.linkTo(line.bottom, margin = 10.dp)
+                    centerHorizontallyTo(parent)
 
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(15.dp)
-        )
+                })
 
-        Text(
-            text = "OTP Verification",
-            color = colorResource1(R.color.black_shade),
-            style = typography.body1,
-            fontSize = 16.sp,
-            modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
-        )
-        Text(
-            text = "An OTP is sent to sridhar@fundsindia.com and +919782741412 (Your contact details registered at RTA for this folio). Use OTP sent to either email or mobile number to proceed",
-            color = colorResource1(R.color.bermuda_grey),
-            style = typography.body1,
-            fontSize = 16.sp,
-            modifier = Modifier
-                .align(alignment = Alignment.CenterHorizontally)
-                .padding(10.dp)
-        )
-
-        Divider(
-            Modifier
-                .width(25.dp)
-                .align(alignment = Alignment.CenterHorizontally)
-                .border(25.dp, colorResource1(R.color.bermuda_grey)),
-            color = colorResource1(R.color.bermuda_grey),
-            thickness = 3.dp
-        )
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp)
-        )
-
-        Text(
-            text = "Enter OTP",
-            color = colorResource1(R.color.black_shade),
-            style = typography.h1,
-            fontSize = 17.sp,
-            modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
-        )
-
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(5.dp)
-        )
-        var isNextBtnStatus by remember {
-            mutableStateOf(false)
-        }
-        var smsCodeNumber by remember {
-            mutableStateOf("")
-        }
-        SmsCodeView(
-            smsCodeLength = 6,
-            smsFulled = {
-                smsCodeNumber = it
-                isNextBtnStatus = it.length == 6
+            var isNextBtnStatus by remember {
+                mutableStateOf(false)
             }
-        )
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(3.dp)
-        )
-        Text(
-            text = "Resend code",
-            color = colorResource1(R.color.blue),
-            style = typography.h1,
-            fontSize = 14.sp,
-            modifier = Modifier.align(alignment = Alignment.End)
-        )
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(3.dp)
-        )
 
-        var targetValue by remember { mutableStateOf("") }
-        MultipleColorInText(targetValue)
+            /*  val otp by remember {
+                  mutableStateOf("")
+              }*/
+            val otp = remember { mutableStateOf("") }
 
-        val totalSeconds = TimeUnit.MINUTES.toSeconds(2)
-        val tickSeconds = 1
-        LaunchedEffect(Unit) {
-            for (second in totalSeconds downTo tickSeconds) {
-                val time = String.format(
-                    "%02d:%02d",
-                    TimeUnit.SECONDS.toMinutes(second),
-                    second - TimeUnit.MINUTES.toSeconds(TimeUnit.SECONDS.toMinutes(second))
-                )
-                delay(1000)
-                targetValue = time
+            RegistrationCodeInput(
+                modifier = Modifier.constrainAs(smsView) {
+                    top.linkTo(otpTxt.bottom, margin = 10.dp)
+                    centerHorizontallyTo(parent)
+                },
+                codeLength = 6,
+                initialCode = otp.value,
+                onTextChanged = { otp.value = it }
+            )
+            /*SmsCodeView(
+                modifier = Modifier.constrainAs(smsView) {
+                    top.linkTo(otpTxt.bottom, margin = 10.dp)
+                    centerHorizontallyTo(parent)
+                },
+                smsCodeLength = 6,
+                smsFulled = {
+                    smsCodeNumber = it
+                    isNextBtnStatus = it.length == 6
+                }
+            )*/
 
+            /*  val (pinValue,onPinValueChange) = remember{
+                  mutableStateOf("")
+              }
+
+              Surface(color = MaterialTheme.colors.background, modifier = Modifier.constrainAs(smsView) {
+                  top.linkTo(otpTxt.bottom, margin = 10.dp)
+                  centerHorizontallyTo(parent)
+              }) {
+                  PinView(pinText =pinValue , onPinTextChange = onPinValueChange, type = PIN_VIEW_TYPE_BORDER )
+              }*/
+
+            Text(
+                text = "Resend code",
+                color = colorResource1(R.color.blue),
+                style = typographyRegular().body1,
+                fontSize = dpToSp(12.dp),
+                modifier = Modifier.constrainAs(resend) {
+                    top.linkTo(smsView.bottom, margin = 10.dp)
+                    end.linkTo(smsView.end, margin = 10.dp)
+                })
+
+            var targetValue by remember { mutableStateOf("") }
+
+            Log.e("targetValue", "targetValue" + targetValue)
+
+            var visible by remember { mutableStateOf(false) }
+            if (!visible) {
+                Text(buildAnnotatedString {
+                    withStyle(style = SpanStyle(color = colorResource1(R.color.bermuda_grey))) {
+                        append("OTP expire in")
+                    }
+                    withStyle(style = SpanStyle(color = colorResource1(R.color.green))) {
+                        append(" " + targetValue)
+                    }
+                    withStyle(style = SpanStyle(color = colorResource1(R.color.bermuda_grey))) {
+                        append(" mins")
+                    }
+                },
+                    style = typographyRegular().body1,
+                    fontSize = dpToSp(12.dp),
+                    modifier = Modifier.constrainAs(otpExpire) {
+                        top.linkTo(resend.bottom, margin = 5.dp)
+                        start.linkTo(title.start)
+                        end.linkTo(title.end)
+                    })
             }
+            if (targetValue == "00:01") {
+                visible = true
+            }
+            val totalSeconds = TimeUnit.MINUTES.toSeconds(2)
+            val tickSeconds = 1
+            LaunchedEffect(Unit) {
+                Log.e("LaunchedEffect", "targetValue" + targetValue)
+                for (second in totalSeconds downTo tickSeconds) {
+                    val time = String.format(
+                        "%02d:%02d", TimeUnit.SECONDS.toMinutes(second),
+                        second - TimeUnit.MINUTES.toSeconds(TimeUnit.SECONDS.toMinutes(second))
+                    )
+                    delay(1000)
+                    targetValue = time
+                }
+            }
+            ButtonWithRoundCornerShape(isNextBtnStatus, modifier = Modifier
+                .constrainAs(btn) {
+                    top.linkTo(smsView.bottom, margin = 55.dp)
+                    start.linkTo(title.start)
+                    end.linkTo(title.end)
+                }
+                .fillMaxWidth()
+                .height(60.dp)
+                .padding(10.dp, 10.dp, 10.dp, 10.dp))
         }
-        ButtonWithRoundCornerShape(isNextBtnStatus)
     }
-
 }
 
 @Composable
-fun MultipleColorInText(value: String) {
-    Column(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Text(
-            buildAnnotatedString {
-                withStyle(style = SpanStyle(color = colorResource1(R.color.bermuda_grey))) {
-                    append("OTP expire in")
-                }
-                withStyle(style = SpanStyle(color = colorResource1(R.color.green))) {
-                    append(" " + value)
-                }
-                withStyle(style = SpanStyle(color = colorResource1(R.color.bermuda_grey))) {
-                    append(" mins")
-                }
-            },
-            modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
-        )
-    }
-}
-
-@Composable
-fun ButtonWithRoundCornerShape(enabled:Boolean) {
+fun ButtonWithRoundCornerShape(enabled: Boolean, modifier: Modifier = Modifier) {
     Button(
         onClick = {
 
-        },enabled=enabled,
+        }, enabled = enabled,
 
         colors =
-        if (enabled){
+        if (enabled) {
             ButtonDefaults.buttonColors(
                 backgroundColor = colorResource1(R.color.blue)
             )
-        }else{
+        } else {
             ButtonDefaults.buttonColors(
                 backgroundColor = colorResource1(R.color.light_blue)
             )
-        }
-        ,
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(60.dp)
-            .padding(10.dp, 10.dp, 10.dp, 10.dp),
+        },
+        modifier = modifier,
         shape = RoundedCornerShape(20.dp),
-
-        /* colors = ButtonDefaults.outlinedButtonColors(
-             contentColor = colorResource(R.color.blue)
-         ),*/
         elevation = ButtonDefaults.elevation(
-            defaultElevation = 10.dp,
+            defaultElevation = 5.dp,
             pressedElevation = 15.dp,
             disabledElevation = 0.dp
         )
@@ -491,7 +539,7 @@ fun LottieAnimations() {
     LottieAnimation(
         composition,
         lottieAnimation,
-        modifier = Modifier.size(50.dp)
+        modifier = Modifier.size(100.dp)
     )
 }
 
@@ -503,6 +551,150 @@ fun TopBar() {
         contentColor = Color.White
     )
 }
+
+const val PIN_VIEW_TYPE_UNDERLINE = 0
+const val PIN_VIEW_TYPE_BORDER = 1
+
+@Composable
+fun PinView(
+    pinText: String,
+    onPinTextChange: (String) -> Unit,
+    digitColor: Color = MaterialTheme.colors.onBackground,
+    digitSize: TextUnit = 16.sp,
+    containerSize: Dp = digitSize.value.dp * 2,
+    digitCount: Int = 4,
+    type: Int = PIN_VIEW_TYPE_UNDERLINE,
+) {
+    BasicTextField(value = pinText,
+        onValueChange = onPinTextChange,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        decorationBox = {
+            Row(horizontalArrangement = Arrangement.SpaceBetween) {
+                repeat(digitCount) { index ->
+                    DigitView(index, pinText, digitColor, digitSize, containerSize, type = type)
+                    Spacer(modifier = Modifier.width(5.dp))
+                }
+            }
+        })
+}
+
+
+@Composable
+private fun DigitView(
+    index: Int,
+    pinText: String,
+    digitColor: Color,
+    digitSize: TextUnit,
+    containerSize: Dp,
+    type: Int = PIN_VIEW_TYPE_UNDERLINE,
+) {
+    val modifier = if (type == PIN_VIEW_TYPE_BORDER) {
+        Modifier
+            .width(containerSize)
+            .border(
+                width = 1.dp,
+                color = digitColor,
+                shape = MaterialTheme.shapes.medium
+            )
+            .padding(bottom = 3.dp)
+    } else Modifier.width(containerSize)
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = if (index >= pinText.length) "" else pinText[index].toString(),
+            color = digitColor,
+            modifier = modifier,
+            style = MaterialTheme.typography.body1,
+            fontSize = digitSize,
+            textAlign = TextAlign.Center
+        )
+        if (type == PIN_VIEW_TYPE_UNDERLINE) {
+            Spacer(modifier = Modifier.height(2.dp))
+            Box(
+                modifier = Modifier
+                    .background(digitColor)
+                    .height(1.dp)
+                    .width(containerSize)
+            )
+        }
+    }
+}
+
+@Composable
+fun RegistrationCodeInput(
+    modifier: Modifier = Modifier,
+    codeLength: Int,
+    initialCode: String,
+    onTextChanged: (String) -> Unit
+) {
+    val code = remember(initialCode) {
+        mutableStateOf(TextFieldValue(initialCode, TextRange(initialCode.length)))
+    }
+    val focusRequester = FocusRequester()
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
+    }
+
+    Box(modifier = modifier, contentAlignment = Alignment.Center) {
+        BasicTextField(
+            value = code.value,
+            onValueChange = { onTextChanged(it.text) },
+            modifier = Modifier.focusRequester(focusRequester = focusRequester),
+            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+            decorationBox = {
+                CodeInputDecoration(code.value.text, codeLength)
+            }
+        )
+    }
+}
+
+@Composable
+private fun CodeInputDecoration(code: String, length: Int) {
+    Box(modifier = Modifier) {
+        Row(horizontalArrangement = Arrangement.Center) {
+            for (i in 0 until length) {
+                val text = if (i < code.length) code[i].toString() else ""
+                CodeEntry(text)
+            }
+        }
+    }
+}
+
+@Composable
+private fun CodeEntry(text: String) {
+   /* val focusManager = LocalFocusManager.current
+    if (text.isNotEmpty()) {
+        focusManager.moveFocus(focusDirection = FocusDirection.Next)
+    }*/
+    Box(modifier = Modifier
+            .padding(4.dp)
+            .width(42.dp)
+            .height(55.dp), contentAlignment = Alignment.Center) {
+        val color = animateColorAsState(
+            targetValue = if (text.isEmpty()) androidx.compose.ui.res.colorResource(R.color.light_blue)
+            else androidx.compose.ui.res.colorResource(R.color.blue))
+
+        Box(Modifier
+                .align(Alignment.BottomCenter)
+                .padding(4.dp)
+                //   .padding(start = 6.dp, end = 6.dp, bottom = 8.dp)
+                .width(42.dp)
+                .height(55.dp)
+                .fillMaxWidth()
+                .border(width = 1.dp, color = color.value)
+                .background(androidx.compose.ui.res.colorResource(R.color.light_blue)))
+
+        Text(modifier = Modifier.align(Alignment.Center),
+            text = text,
+            color = colorResource1(R.color.blue),
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Medium)
+    }
+}
+
 
 
 
