@@ -1,0 +1,110 @@
+[
+    {
+        "merged": "com.example.myapplication.app-merged_res-48:/drawable_ic_otp_verify.xml.flat",
+        "source": "com.example.myapplication.app-main-50:/drawable/ic_otp_verify.xml"
+    },
+    {
+        "merged": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-merged_res-48:/xml_data_extraction_rules.xml.flat",
+        "source": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-main-50:/xml/data_extraction_rules.xml"
+    },
+    {
+        "merged": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-merged_res-48:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-main-50:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-merged_res-48:/mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-main-50:/mipmap-mdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-merged_res-48:/raw_congratulations.json.flat",
+        "source": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-main-50:/raw/congratulations.json"
+    },
+    {
+        "merged": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-merged_res-48:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-main-50:/mipmap-anydpi-v26/ic_launcher_round.xml"
+    },
+    {
+        "merged": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-merged_res-48:/drawable_ic_delete.xml.flat",
+        "source": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-main-50:/drawable/ic_delete.xml"
+    },
+    {
+        "merged": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-merged_res-48:/font_opensansbold.ttf.flat",
+        "source": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-main-50:/font/opensansbold.ttf"
+    },
+    {
+        "merged": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-merged_res-48:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-main-50:/mipmap-xxxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-merged_res-48:/mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-main-50:/mipmap-xxxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-merged_res-48:/font_opensansregular.ttf.flat",
+        "source": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-main-50:/font/opensansregular.ttf"
+    },
+    {
+        "merged": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-merged_res-48:/xml_backup_rules.xml.flat",
+        "source": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-main-50:/xml/backup_rules.xml"
+    },
+    {
+        "merged": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-merged_res-48:/mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-main-50:/mipmap-hdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-merged_res-48:/drawable_ic_close_otp.xml.flat",
+        "source": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-main-50:/drawable/ic_close_otp.xml"
+    },
+    {
+        "merged": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-merged_res-48:/mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-main-50:/mipmap-xhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-merged_res-48:/drawable_ic_share.xml.flat",
+        "source": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-main-50:/drawable/ic_share.xml"
+    },
+    {
+        "merged": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-merged_res-48:/mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-main-50:/mipmap-xhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-merged_res-48:/mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-main-50:/mipmap-mdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-merged_res-48:/drawable_space.jpg.flat",
+        "source": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-main-50:/drawable/space.jpg"
+    },
+    {
+        "merged": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-merged_res-48:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-main-50:/mipmap-xxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-merged_res-48:/drawable_ic_edit.xml.flat",
+        "source": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-main-50:/drawable/ic_edit.xml"
+    },
+    {
+        "merged": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-merged_res-48:/mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-main-50:/mipmap-xxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-merged_res-48:/drawable_ic_link.xml.flat",
+        "source": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-main-50:/drawable/ic_link.xml"
+    },
+    {
+        "merged": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-merged_res-48:/mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-main-50:/mipmap-hdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-merged_res-48:/font_opensanssemibold.ttf.flat",
+        "source": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-main-50:/font/opensanssemibold.ttf"
+    },
+    {
+        "merged": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-merged_res-48:/drawable_ic_launcher_background.xml.flat",
+        "source": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-main-50:/drawable/ic_launcher_background.xml"
+    },
+    {
+        "merged": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-merged_res-48:/drawable-v24_ic_launcher_foreground.xml.flat",
+        "source": "/Users/fiuser/.gradle/daemon/7.3.3/com.example.myapplication.app-main-50:/drawable-v24/ic_launcher_foreground.xml"
+    }
+]

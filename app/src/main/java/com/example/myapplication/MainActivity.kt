@@ -1,8 +1,8 @@
 package com.example.myapplication
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
@@ -10,18 +10,26 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEvent
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
@@ -41,10 +49,13 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.core.view.WindowCompat
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.example.myapplication.model.Transaction
+import com.example.myapplication.model.Transactions
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
@@ -53,9 +64,197 @@ import androidx.compose.ui.res.colorResource as colorResource1
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window?.let { WindowCompat.setDecorFitsSystemWindows(it, false) }
+        } else {
+            @Suppress("DEPRECATION")
+            window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+        }
         setContent {
             ShowBottomSheet()
+         //   DetailsContent()
+        }
+    }
+}
+
+@Composable
+fun EmployeeCard(emp: Transaction) {
+    Card(
+        modifier = Modifier
+            .padding(horizontal = 5.dp, vertical = 5.dp)
+            .fillMaxWidth(),
+        elevation = 5.dp,
+        backgroundColor = Color.White,
+        shape = RoundedCornerShape(corner = CornerSize(7.dp))) {
+        ConstraintLayout {
+            val (image, title, line, fdref,icra,fdrefval,icraval) = createRefs()
+            Image(modifier = Modifier
+                    .height(40.dp)
+                    .width(40.dp)
+                    .constrainAs(image) {
+                        top.linkTo(parent.top, margin = 10.dp)
+                        start.linkTo(parent.start, margin = 15.dp)
+                        bottom.linkTo(title.top, margin = 2.dp)
+                    },
+                painter = painterResource(id = R.drawable.ic_otp_verify),
+                contentScale = ContentScale.FillBounds,
+                contentDescription = null
+            )
+            Text(
+                text = "Bajaj Finance Ltd.",
+                textAlign = TextAlign.Start,
+                color = colorResource1(R.color.black_shade),
+                style = typographyBold().h1,
+                fontSize = dpToSp(13.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .constrainAs(title) {
+                        top.linkTo(image.bottom, margin = 5.dp)
+                        start.linkTo(image.start)
+                        bottom.linkTo(line.top, margin = 5.dp)
+                    }
+            )
+            Divider(modifier = Modifier
+                    .fillMaxWidth()
+                    .constrainAs(line) {
+                        centerHorizontallyTo(parent)
+                        top.linkTo(title.bottom, margin = 5.dp)
+                        bottom.linkTo(fdref.top, margin = 15.dp)
+                    },
+                color = colorResource1(R.color.dividerline),
+                thickness = 1.5.dp)
+
+            Text(
+                "FD Ref#",
+                textAlign = TextAlign.Start,
+                color = colorResource1(R.color.grey),
+                style = typographyBold().h1,
+                fontSize = dpToSp(12.dp),
+                modifier = Modifier
+                    .constrainAs(fdref) {
+                        top.linkTo(line.bottom, margin = 5.dp)
+                        start.linkTo(image.start, margin = 15.dp)
+                        end.linkTo(icra.start, margin = 0.dp)
+                    }
+                    .fillMaxWidth(.5f)
+                   // .background(Color.Blue)
+            )
+            Text(
+                "ICRA Rating",
+                textAlign = TextAlign.Start,
+                color = colorResource1(R.color.grey),
+                style = typographyBold().h1,
+                fontSize = dpToSp(12.dp),
+                modifier = Modifier
+                    .constrainAs(icra) {
+                        top.linkTo(line.bottom, margin = 5.dp)
+                        start.linkTo(fdref.end)
+                        end.linkTo(parent.end,margin = 0.dp)
+                    }
+                    .fillMaxWidth(.5f)
+                 //   .background(Color.Green)
+            )
+
+            Text(
+                "FD1241",
+                textAlign = TextAlign.Start,
+                color = colorResource1(R.color.black_shade),
+                style = typographyBold().h1,
+                fontSize = dpToSp(12.dp),
+                modifier = Modifier
+                    .constrainAs(fdrefval) {
+                        top.linkTo(fdref.bottom, margin = 5.dp)
+                        start.linkTo(fdref.start, margin = 0.dp)
+                    }
+                    .fillMaxWidth(.5f)
+                  //  .background(Color.Blue)
+            )
+
+            Text(
+                "MAAA",
+                textAlign = TextAlign.Start,
+                color = colorResource1(R.color.black_shade),
+                style = typographyBold().h1,
+                fontSize = dpToSp(12.dp),
+                modifier = Modifier
+                    .constrainAs(icraval) {
+                        top.linkTo(icra.bottom, margin = 5.dp)
+                        start.linkTo(icra.start)
+                        end.linkTo(parent.end,margin = 0.dp)
+                    }
+                    .fillMaxWidth(.5f)
+                 //  .background(Color.Green)
+            )
+        }
+    }
+
+    /*Card(
+        modifier = Modifier
+            .padding(horizontal = 8.dp, vertical = 8.dp)
+            .fillMaxWidth(),
+        elevation = 2.dp,
+        backgroundColor = Color.LightGray,
+        shape = RoundedCornerShape(corner = CornerSize(16.dp))
+
+    ) {
+
+       Row(modifier = Modifier.padding(20.dp)) {
+            Column(
+                modifier = Modifier.weight(1f),
+                Arrangement.Center
+            ) {
+                Text(
+                    text = emp.title,
+                    style = TextStyle(
+                        color = Color.Black,
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold,
+                    )
+                )
+                Text(
+                    text = "Age :- " + emp.age.toString(),
+                    style = TextStyle(
+                        color = Color.Black,
+                        fontSize = 15.sp
+                    )
+                )
+                Text(
+                    text = "Sex :- " + emp.sex,
+                    style = TextStyle(
+                        color = Color.Black,
+                        fontSize = 15.sp
+                    )
+                )
+
+                Text(
+                    text = "Description :- " + emp.description,
+                    style = TextStyle(
+                        color = Color.Black,
+                        fontSize = 15.sp
+                    )
+                )
+            }
+            Image(
+                painter = painterResource(emp.ImageId),
+                contentDescription = "Profile Image",
+                contentScale = ContentScale.FillHeight,
+                modifier = Modifier
+                    .padding(8.dp)
+                    .size(110.dp)
+                    .clip((CircleShape))
+            )
+        }
+    }*/
+}
+
+@Composable
+fun DetailsContent() {
+    val employees = remember { Transactions.TransactionsList }
+    LazyColumn(
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
+    ) {
+        items(employees) {
+            EmployeeCard(emp = it)
         }
     }
 }
@@ -200,9 +399,11 @@ fun typographyRegular() = Typography(
 @SuppressLint("CoroutineCreationDuringComposition", "UnrememberedMutableState")
 @Composable
 fun BottomSheetContent() {
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .padding(10.dp)) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp)
+    ) {
         ConstraintLayout {
             val (title, desc, line, otpTxt, smsView, resend, otpExpire, btn) = createRefs()
             Text(
@@ -253,13 +454,10 @@ fun BottomSheetContent() {
 
                 })
 
-            var isNextBtnStatus by remember {
+            val isNextBtnStatus by remember {
                 mutableStateOf(false)
             }
 
-            /*  val otp by remember {
-                  mutableStateOf("")
-              }*/
             val otp = remember { mutableStateOf("") }
 
             RegistrationCodeInput(
@@ -269,8 +467,7 @@ fun BottomSheetContent() {
                 },
                 codeLength = 6,
                 initialCode = otp.value,
-                onTextChanged = { otp.value = it }
-            )
+                onTextChanged = { otp.value = it })
             /*SmsCodeView(
                 modifier = Modifier.constrainAs(smsView) {
                     top.linkTo(otpTxt.bottom, margin = 10.dp)
@@ -306,7 +503,7 @@ fun BottomSheetContent() {
 
             var targetValue by remember { mutableStateOf("") }
 
-            Log.e("targetValue", "targetValue" + targetValue)
+            //     Log.e("targetValue", "targetValue" + targetValue)
 
             var visible by remember { mutableStateOf(false) }
             if (!visible) {
@@ -335,7 +532,7 @@ fun BottomSheetContent() {
             val totalSeconds = TimeUnit.MINUTES.toSeconds(2)
             val tickSeconds = 1
             LaunchedEffect(Unit) {
-                Log.e("LaunchedEffect", "targetValue" + targetValue)
+                //  Log.e("LaunchedEffect", "targetValue" + targetValue)
                 for (second in totalSeconds downTo tickSeconds) {
                     val time = String.format(
                         "%02d:%02d", TimeUnit.SECONDS.toMinutes(second),
@@ -420,20 +617,13 @@ fun OtpScreen() {
             )
         }
     }
-    LaunchedEffect(
-        key1 = digit3,
-    ) {
+    LaunchedEffect(key1 = digit3) {
         if (digit3.isNotEmpty()) {
-            focusManager.moveFocus(
-                focusDirection = FocusDirection.Next,
-            )
+            focusManager.moveFocus(focusDirection = FocusDirection.Next)
         }
     }
 
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceAround,
-    ) {
+    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
         OutlinedTextField(
             value = digit1,
             onValueChange = {
@@ -645,7 +835,9 @@ fun RegistrationCodeInput(
             modifier = Modifier.focusRequester(focusRequester = focusRequester),
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
             decorationBox = {
+                // if (codeLength>=code.value.text.length){
                 CodeInputDecoration(code.value.text, codeLength)
+                // }
             }
         )
     }
@@ -657,27 +849,55 @@ private fun CodeInputDecoration(code: String, length: Int) {
         Row(horizontalArrangement = Arrangement.Center) {
             for (i in 0 until length) {
                 val text = if (i < code.length) code[i].toString() else ""
-                CodeEntry(text)
+                //  if (text.isNotEmpty())
+                CodeEntry(text, i, length)
             }
         }
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun CodeEntry(text: String) {
-   /* val focusManager = LocalFocusManager.current
-    if (text.isNotEmpty()) {
-        focusManager.moveFocus(focusDirection = FocusDirection.Next)
-    }*/
-    Box(modifier = Modifier
+private fun CodeEntry(text: String, index: Int, length: Int) {
+    val focusRequesters: List<FocusRequester> = remember {
+        (0 until length).map { FocusRequester() }
+    }
+    val enteredNumbers = remember {
+        mutableStateListOf(
+            *((0 until length).map { "" }.toTypedArray())
+        )
+    }
+    Box(
+        modifier = Modifier
             .padding(4.dp)
             .width(42.dp)
-            .height(55.dp), contentAlignment = Alignment.Center) {
+            .height(55.dp)
+            .focusRequester(focusRequesters[index])
+            .focusRequester(focusRequester = focusRequesters[index])
+            .onKeyEvent { keyEvent: KeyEvent ->
+                val currentValue = enteredNumbers.getOrNull(index) ?: ""
+                if (keyEvent.key == Key.Backspace) {
+                    if (currentValue.isNotEmpty()) {
+                        enteredNumbers[index] = ""
+                        enteredNumbers.joinToString(separator = "")
+                        //  smsFulled.invoke(enteredNumbers.joinToString(separator = ""))
+                    } else {
+                        focusRequesters
+                            .getOrNull(index.minus(1))
+                            ?.requestFocus()
+                    }
+                }
+                false
+            },
+        contentAlignment = Alignment.Center
+    ) {
         val color = animateColorAsState(
             targetValue = if (text.isEmpty()) androidx.compose.ui.res.colorResource(R.color.light_blue)
-            else androidx.compose.ui.res.colorResource(R.color.blue))
+            else androidx.compose.ui.res.colorResource(R.color.blue)
+        )
 
-        Box(Modifier
+        Box(
+            Modifier
                 .align(Alignment.BottomCenter)
                 .padding(4.dp)
                 //   .padding(start = 6.dp, end = 6.dp, bottom = 8.dp)
@@ -685,13 +905,16 @@ private fun CodeEntry(text: String) {
                 .height(55.dp)
                 .fillMaxWidth()
                 .border(width = 1.dp, color = color.value)
-                .background(androidx.compose.ui.res.colorResource(R.color.light_blue)))
+                .background(androidx.compose.ui.res.colorResource(R.color.light_blue))
+        )
 
-        Text(modifier = Modifier.align(Alignment.Center),
+        Text(
+            modifier = Modifier.align(Alignment.Center),
             text = text,
             color = colorResource1(R.color.blue),
             fontSize = 20.sp,
-            fontWeight = FontWeight.Medium)
+            fontWeight = FontWeight.Medium
+        )
     }
 }
 
